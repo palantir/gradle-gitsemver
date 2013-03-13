@@ -44,4 +44,4 @@ publishing {
 
 sourceCompatibility = 1.5
 version = "0.1.0"
-group = "com.palantir.gradle.gitsemver"
+group = "com.palantir"
