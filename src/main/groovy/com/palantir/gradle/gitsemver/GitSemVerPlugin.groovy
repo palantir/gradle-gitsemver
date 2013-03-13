@@ -121,7 +121,7 @@ class GitSemVerPlugin implements Plugin<Project> {
         def theTag = largestTag(tagsFromHead(repo))
         def described = describeHeadRegarding(repo, theTag)
         project.version = described
-        println project.version
+        logger.debug("Setting version to: ${project.version}")
     }
 
 
