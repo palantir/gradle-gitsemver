@@ -1,0 +1,24 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.jruby:jruby-complete:1.7.3"
+  compile gradleApi()
+  compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
+  groovy localGroovy()
+  testCompile "com.google.guava:guava:14.0"
+}
+
+eclipse {
+  classpath {
+    defaultOutputDir = file('.ecbuild')
+  }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.4'
+}

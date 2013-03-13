@@ -1,0 +1,7 @@
+/build/
+/.gradle/
+.ecbin
+.classpath
+.project
+/.ecbuild
+/.settings/
