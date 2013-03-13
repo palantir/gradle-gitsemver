@@ -108,6 +108,9 @@ class GitSemVerPlugin implements Plugin<Project> {
     }
 
     private static String largestTag(List<String> foundTags) {
+        if (foundTags.size() == 0) {
+            throw new IllegalArgumentException("There are no tags!")
+        }
         ScriptingContainer container = new ScriptingContainer()
         container.put("possible_tags", foundTags)
         def stream = GitSemVerPlugin.class.getClassLoader().getResource('calcversion.rb').openStream()
