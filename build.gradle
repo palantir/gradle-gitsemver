@@ -20,5 +20,9 @@ eclipse {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.4'
+  gradleVersion = '1.4'
 }
+
+sourceCompatibility = 1.5
+version = "0.0.0-SNAPSHOT"
+group = "com.palantir.gradle.gitsemver"
