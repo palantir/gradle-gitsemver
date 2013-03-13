@@ -1,8 +1,13 @@
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
+apply plugin: 'ivy-publish'
 
 repositories {
   mavenCentral()
+}
+
+publishing {
+
 }
 
 dependencies {
@@ -21,6 +26,20 @@ eclipse {
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.4'
+}
+
+publishing {
+    repositories {
+        ivy {
+            name = "ivyLocal"
+            url "${System.properties['user.home']}/.ivy2/local"
+        
+            layout "pattern", {
+              artifact "[organisation]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]"
+              ivy      "[organisation]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]"
+            }
+        }
+    }
 }
 
 sourceCompatibility = 1.5
