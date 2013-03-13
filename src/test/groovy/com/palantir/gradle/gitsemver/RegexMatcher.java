@@ -1,3 +1,8 @@
+/*
+   Copyright 2009 Piotr Gabryanczyk
+
+   Sourced from: http://piotrga.wordpress.com/2009/03/27/hamcrest-regex-matcher/
+*/
 package com.palantir.gradle.gitsemver;
 
 import org.hamcrest.BaseMatcher;
