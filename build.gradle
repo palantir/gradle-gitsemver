@@ -35,9 +35,15 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+task javadocJar(type: Jar, dependsOn:javadoc) {
+     classifier = 'javadoc'
+     from javadoc.destinationDir
+}
+
 artifacts {
     archives jar
     archives sourcesJar
+    archives javadocJar
 }
 
 task wrapper(type: Wrapper) {
@@ -62,10 +68,35 @@ def loadProperties(String sourceFileName) {
 
 loadProperties('signing.properties')
 
-if (sonatypeUsername && sonatypePassword) {
-    uploadArchives {
-        repositories {
-            mavenDeployer {
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.project {
+                name 'gitsemver - a plugin for gradle'
+                packaging 'jar'
+                description 'Provides project version setting via tags in a semveresq format'
+                url 'https://github.com/palantir/gradle-gitsemver'
+                scm {
+                    url 'scm:git:https://github.com/palantir/gradle-gitsemver.git'
+                }
+                licenses {
+                    license {
+                        name 'Apache License v2'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'ericlanderson'
+                        name 'Eric Anderson'
+                        email 'eanderson@palantir.com'
+                        organization 'Palantir Technologies'
+                        organizationUrl 'http://palantir.com'
+                        timezone '-8'
+                    }
+                }
+            }
+            if (sonatypeUsername && sonatypePassword) {
                 beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
 
                 if (version.endsWith("-SNAPSHOT")) {
