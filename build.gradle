@@ -4,33 +4,32 @@ apply plugin: 'ivy-publish'
 apply plugin: 'signing'
 apply plugin: 'maven'
 
+version = "0.1.1-SNAPSHOT"
+group = "com.palantir"
+
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
 repositories {
-  mavenCentral()
-}
-
-publishing {
-
+    mavenCentral()
 }
 
 dependencies {
-  compile "org.jruby:jruby-complete:1.7.3"
-  compile gradleApi()
-  compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
-  groovy localGroovy()
-  testCompile "com.google.guava:guava:14.0"
+    compile "org.jruby:jruby-complete:1.7.3"
+    compile gradleApi()
+    compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
+    groovy localGroovy()
+    testCompile "com.google.guava:guava:14.0"
 }
 
 eclipse {
-  classpath {
-    defaultOutputDir = file('.ecbuild')
-  }
+    classpath {
+        defaultOutputDir = file('.ecbuild')
+    }
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from 'build/docs/javadoc'
-}
- 
+
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
@@ -38,7 +37,6 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives jar
-    archives javadocJar
     archives sourcesJar
 }
 
@@ -64,26 +62,22 @@ def loadProperties(String sourceFileName) {
 
 loadProperties('signing.properties')
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
- 
-            /*repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }*/
+if (sonatypeUsername && sonatypePassword) {
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-              authentication(userName: sonatypeUsername, password: sonatypePassword)
+                if (version.endsWith("-SNAPSHOT")) {
+                    repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    }
+                } else {
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    }
+                }
             }
         }
     }
 }
-
-
-
-sourceCompatibility = 1.5
-targetCompatibility = 1.5
-
-version = "0.1.1-SNAPSHOT"
-group = "com.palantir"
