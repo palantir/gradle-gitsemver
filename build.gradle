@@ -1,47 +1,83 @@
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'ivy-publish'
+apply plugin: 'signing'
+apply plugin: 'maven'
+
+version = "0.1.1-SNAPSHOT"
+group = "com.palantir"
+
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 repositories {
-  mavenCentral()
-}
-
-publishing {
-
+    mavenCentral()
 }
 
 dependencies {
-  compile "org.jruby:jruby-complete:1.7.3"
-  compile gradleApi()
-  compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
-  groovy localGroovy()
-  testCompile "com.google.guava:guava:14.0"
+    compile "org.jruby:jruby-complete:1.7.3"
+    compile gradleApi()
+    compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
+    groovy localGroovy()
+    testCompile "com.google.guava:guava:14.0"
 }
 
 eclipse {
-  classpath {
-    defaultOutputDir = file('.ecbuild')
-  }
+    classpath {
+        defaultOutputDir = file('.ecbuild')
+    }
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
 }
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.4'
 }
 
-publishing {
-    repositories {
-        ivy {
-            name = "ivyLocal"
-            url "${System.properties['user.home']}/.ivy2/local"
-        
-            layout "pattern", {
-              artifact "[organisation]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]"
-              ivy      "[organisation]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]"
-            }
+signing {
+    sign configurations.archives
+}
+
+// loadProperties taken from: http://issues.gradle.org/browse/GRADLE-1419
+def loadProperties(String sourceFileName) {
+    def config = new Properties()
+    def propFile = new File(sourceFileName)
+    if (propFile.canRead()) {
+        config.load(new FileInputStream(propFile))
+        for (Map.Entry property in config) {
+            ext[property.key] = property.value;
         }
     }
 }
 
-sourceCompatibility = 1.5
-version = "0.1.0"
-group = "com.palantir.gradle.gitsemver"
+loadProperties('signing.properties')
+
+if (sonatypeUsername && sonatypePassword) {
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+
+                if (version.endsWith("-SNAPSHOT")) {
+                    repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    }
+                } else {
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    }
+                }
+            }
+        }
+    }
+}
