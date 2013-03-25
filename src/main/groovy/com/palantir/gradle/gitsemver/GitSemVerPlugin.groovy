@@ -96,23 +96,25 @@ class GitSemVerPlugin implements Plugin<Project> {
     }
 
     private static String describeHeadRegarding(Repository repo, String tag) {
+        logger.debug("describeHeadRegarding(repo, '${tag}')")
         final ObjectId objectId = objectIdForTag(repo, tag)
 
         final ObjectId headOid = headObjectId(repo);
 
         RevWalk walk = new RevWalk(repo)
-        walk.markStart(walk.parseCommit(headOid))
+        def startingPoint = walk.parseCommit(headOid)
+        logger.debug("Starting point: ${startingPoint}")
+        walk.markStart(startingPoint)
+        walk.markUninteresting(walk.lookupCommit(objectId))
         walk.sort(RevSort.TOPO)
+
 
 
 
         int commitCount = 0
         for (RevCommit c = walk.next(); c != null; c = walk.next()) {
-            if (c.getId().equals(objectId)) {
-                walk.markUninteresting(c)
-            } else {
-                commitCount++
-            }
+            logger.debug("Counting " + c.getId().abbreviate(7))
+            commitCount++
         }
 
         if (commitCount > 0) {
@@ -135,8 +137,10 @@ class GitSemVerPlugin implements Plugin<Project> {
 
     void apply(Project project) {
         FileRepository repo = new FileRepository(project.projectDir.absolutePath + "/.git")
-
-        def theTag = largestTag(tagsFromHead(repo))
+        def tagsFromHead = tagsFromHead(repo)
+        logger.debug("Possible tags: ${tagsFromHead}")
+        def theTag = largestTag(tagsFromHead)
+        logger.debug("The tag we're shooting for: ${theTag}")
         def described = describeHeadRegarding(repo, theTag)
         project.version = described
         logger.debug("Setting version to: ${project.version}")

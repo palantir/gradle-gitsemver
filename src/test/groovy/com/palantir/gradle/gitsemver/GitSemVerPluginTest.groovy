@@ -47,9 +47,18 @@ class GitSemVerPluginTest {
     }
 
     @Test
-    public void testThatItWorks() {
+    public void testThatItFindsTheLargestTag() {
         Project project = ProjectBuilder.builder().withProjectDir(dir).build();
         project.apply plugin: 'gitsemver'
         Assert.assertThat(project.version, RegexMatcher.matches("v0\\.1\\.0\\+2\\.g.*"))
+    }
+
+    @Test
+    public void testThatWeCountCommitsCorrectly() {
+        git.tag().setMessage("msg").setName("v0.2.0").call()
+
+        Project project = ProjectBuilder.builder().withProjectDir(dir).build();
+        project.apply plugin: 'gitsemver'
+        Assert.assertEquals("v0.2.0", project.version)
     }
 }

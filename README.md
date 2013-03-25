@@ -43,6 +43,19 @@ Sure. Standard semver sorts words alphabetically. This is not wanted if you're g
 
 ## Adding to your build
 
+### As a release
+
+```
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.palantir:gradle-gitsemver:0.1.2'
+  }
+}
+```
+
 ### As a snapshot
 
 1. Add the sonatype snapshot repository to your buildscript repos
