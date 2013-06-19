@@ -134,9 +134,28 @@ class GitSemVerPlugin implements Plugin<Project> {
 
         return container.runScriptlet(stream, 'calcversion.rb')
     }
+    
+    /**
+    * Recursive search for the .git directory from the current dir to the parents.
+    */
+    private File findGitDir(File dir) {
+       File gitDir = new File(dir, ".git");
+       if (gitDir.exists()) {
+          return gitDir;
+       } else if (dir.getParentFile() != null ) {
+          return findGitDir(dir.getParentFile());
+       } else {
+       	 return null;
+       }
+    
+    }
 
     void apply(Project project) {
-        FileRepository repo = new FileRepository(project.projectDir.absolutePath + "/.git")
+        File gitDir = findGitDir(project.projectDir);
+	if (gitDir == null) {
+	   throw new FileNotFoundException("Can't find the .git directory in the projectDir or any parent dir");
+	}
+        FileRepository repo = new FileRepository(gitDir);	
         def tagsFromHead = tagsFromHead(repo)
         logger.debug("Possible tags: ${tagsFromHead}")
         def theTag = largestTag(tagsFromHead)
