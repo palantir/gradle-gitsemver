@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<testsuite name="com.palantir.semver.SemanticVersionTest" tests="21" failures="0" errors="0" timestamp="2013-06-23T04:41:46" hostname="krichards-mbp" time="0.014">
+  <properties/>
+  <testcase name="testStringWithRcAndBuild" classname="com.palantir.semver.SemanticVersionTest" time="0.0020"/>
+  <testcase name="testStringWithOnlyReleaseCandidate" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testDifferentIdentifierLengthReleaseCandidate" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testBasicStringWithoutReleaseOrBuild" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testReleaseCandidateDifferentLenthsComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testReleaseCandidateStringComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0010"/>
+  <testcase name="testMajorVersionComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testMinorVersionComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testNonNegative" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testReleaseCandidateNumericAndNotComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testPatchVersionComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testDevVsBeta" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testEqualComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testReleaseCandidateComparison" classname="com.palantir.semver.SemanticVersionTest" time="0.0010"/>
+  <testcase name="testDevVsAlpha" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testDevVsRc" classname="com.palantir.semver.SemanticVersionTest" time="0.0010"/>
+  <testcase name="testVersionComparisonNull" classname="com.palantir.semver.SemanticVersionTest" time="0.0010"/>
+  <testcase name="testNullAndNonNullReleaseCandidate" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testBasicStringWithExtraDot" classname="com.palantir.semver.SemanticVersionTest" time="0.0010"/>
+  <testcase name="testKeywordVsNormal" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <testcase name="testStringWithOnlyBuild" classname="com.palantir.semver.SemanticVersionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

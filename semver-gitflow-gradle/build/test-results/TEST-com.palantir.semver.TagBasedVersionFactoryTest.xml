@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<testsuite name="com.palantir.semver.TagBasedVersionFactoryTest" tests="12" failures="0" errors="0" timestamp="2013-06-23T04:41:45" hostname="krichards-mbp" time="0.631">
+  <properties/>
+  <testcase name="testNonVersionedTagIsSkipped" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.237"/>
+  <testcase name="testHeadPointsAtCommitAboveStable" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.041"/>
+  <testcase name="testHeadPointsAtUnstableTag" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.033"/>
+  <testcase name="testVUnnecessary" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.034"/>
+  <testcase name="testUnstableIsDirty" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.044"/>
+  <testcase name="testHeadPointsOneAboveStable" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.037"/>
+  <testcase name="testCommitCount" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.049"/>
+  <testcase name="testHeadPointsAtStable" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.028"/>
+  <testcase name="testTwoTagsSameCommit" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.032"/>
+  <testcase name="testNoTags" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.02"/>
+  <testcase name="testStableIsDirty" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.027"/>
+  <testcase name="testOrdering" classname="com.palantir.semver.TagBasedVersionFactoryTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
