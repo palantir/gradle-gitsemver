@@ -79,22 +79,22 @@ How do I use it?
 
 ### Validation
 
-    ```
-    SemanticVersions.isValid(myVersionString);
-    ```
+```
+SemanticVersions.isValid(myVersionString);
+```
 
 
 ### Parse and compare
 
-    ```
-    SemanticVersion versionOne = SemanticVersions.parse(versionOneString);
-    SemanticVersion versionTwo = SemanticVersions.parse(versionTwoString);
-    int comparisonResult = versionOne.compareTo(versionTwo);
-    if (comparisonResult < 0) {
-        // versionOne is the older version
-    } else if (comparisonResult > 0) {
-        // versionTwo is the older version
-    } else {
-        // versionOne and versionTwo are the same version
-    }
-    ```
+```
+SemanticVersion versionOne = SemanticVersions.parse(versionOneString);
+SemanticVersion versionTwo = SemanticVersions.parse(versionTwoString);
+int comparisonResult = versionOne.compareTo(versionTwo);
+if (comparisonResult < 0) {
+    // versionOne is the older version
+} else if (comparisonResult > 0) {
+    // versionTwo is the older version
+} else {
+    // versionOne and versionTwo are the same version
+}
+```
