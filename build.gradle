@@ -52,6 +52,50 @@ subprojects {
     }
 
     loadProperties('signing.properties')
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                pom.project {
+                    name 'gitsemver - a plugin for gradle'
+                    packaging 'jar'
+                    description 'Provides project version setting via tags in a semveresq format'
+                    url 'https://github.com/palantir/gradle-gitsemver'
+                    scm {
+                        url 'scm:git:https://github.com/palantir/gradle-gitsemver.git'
+                    }
+                    licenses {
+                        license {
+                            name 'Apache License v2'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'ericlanderson'
+                            name 'Eric Anderson'
+                            email 'eanderson@palantir.com'
+                            organization 'Palantir Technologies'
+                            organizationUrl 'http://palantir.com'
+                            timezone '-8'
+                        }
+                    }
+                }
+                if (sonatypeUsername && sonatypePassword) {
+                    beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+
+                    if (version.endsWith("-SNAPSHOT")) {
+                        repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                            authentication(userName: sonatypeUsername, password: sonatypePassword)
+                        }
+                    } else {
+                        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                            authentication(userName: sonatypeUsername, password: sonatypePassword)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 project(":semver-java") {
