@@ -1,3 +1,14 @@
+buildscript {
+   repositories {
+     maven {
+       url "https://repository-anzix.forge.cloudbees.com/snapshot"
+     }
+     mavenCentral()
+   }
+   dependencies {
+       classpath 'net.anzix.build:gradle-plugins:1.0-SNAPSHOT'
+   }
+}
 // loadProperties taken from: http://issues.gradle.org/browse/GRADLE-1419
 def loadProperties(String sourceFileName) {
     def config = new Properties()
@@ -14,10 +25,12 @@ subprojects {
     apply plugin: 'groovy'
     apply plugin: 'eclipse'
     apply plugin: 'ivy-publish'
-    apply plugin: 'signing'
+//    apply plugin: 'signing'
     apply plugin: 'maven'
-    version = "0.2.0"
-    group = "com.palantir"
+    apply plugin: 'anzix-upload'
+
+    version = "0.2.1"
+    group = "net.anzix.fork"
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
@@ -47,7 +60,7 @@ subprojects {
         archives sourcesJar
         archives javadocJar
     }
-    signing {
+/*    signing {
         sign configurations.archives
     }
 
@@ -95,7 +108,7 @@ subprojects {
                 }
             }
         }
-    }
+    }*/
 }
 
 project(":semver-java") {
