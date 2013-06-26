@@ -1,1 +1,1 @@
-rootProject.name = 'gradle-gitsemver'
+include "semver-java", "semver-gitflow-gradle"
