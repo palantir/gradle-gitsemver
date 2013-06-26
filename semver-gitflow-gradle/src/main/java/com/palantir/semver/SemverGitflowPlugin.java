@@ -11,12 +11,19 @@ public class SemverGitflowPlugin implements Plugin<Project> {
 
     public static final String GROUP = "Semantic Versioning";
     private static final String BUILD_NUMBER_PROPERTY = "BUILD_NUMBER";
+    private static final String SEMVER_PROPERTY = "gitSemVersion";
 
     @Override
     public void apply(Project project) {
         try {
-            String version = getRepoVersion(project);
-            project.setVersion(version);
+            String version;
+            if (project.getParent() != null && project.getParent().getProperties() != null &&
+                    project.getParent().getProperties().get(SEMVER_PROPERTY) != null) {
+                version = (String) project.getParent().getProperties().get(SEMVER_PROPERTY);
+            } else {
+                version = getRepoVersion(project);
+            }
+            project.setProperty(SEMVER_PROPERTY, version);
             addPrintVersionTask(project);
         } catch (NoWorkTreeException e) {
             throw new VersionApplicationException(e);

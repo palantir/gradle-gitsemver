@@ -1,3 +1,8 @@
+```
+TODO: fix outdated documentation
+```
+
+
 Semantic Versioning / Gitflow Gradle Plugin
 ===========================================
 

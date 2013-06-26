@@ -6,3 +6,5 @@ build/
 .classpath
 .project
 signing.properties
+.idea
+*.iml

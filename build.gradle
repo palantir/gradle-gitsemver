@@ -29,7 +29,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'anzix-upload'
 
-    version = "0.2.1"
+    version = "0.2.2-SNAPSHOT"
     group = "net.anzix.fork"
 
     sourceCompatibility = 1.6
