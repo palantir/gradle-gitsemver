@@ -1,12 +1,12 @@
 buildscript {
    repositories {
      maven {
-       url "https://repository-anzix.forge.cloudbees.com/snapshot"
+       url "http://zx.anzix.net/repo"
      }
      mavenCentral()
    }
    dependencies {
-       classpath 'net.anzix.build:gradle-plugins:1.0-SNAPSHOT'
+       classpath 'net.anzix.build:gradle-plugins:1.1.0'
    }
 }
 // loadProperties taken from: http://issues.gradle.org/browse/GRADLE-1419
@@ -23,15 +23,13 @@ def loadProperties(String sourceFileName) {
 
 subprojects {
     apply plugin: 'groovy'
-    apply plugin: 'eclipse'
-    apply plugin: 'ivy-publish'
-//    apply plugin: 'signing'
-    apply plugin: 'maven'
-    apply plugin: 'anzix-upload'
+
+
+  
 
     version = "0.2.2-SNAPSHOT"
     group = "net.anzix.fork"
-
+    apply plugin: 'anzix-upload'
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
 
@@ -39,11 +37,7 @@ subprojects {
         mavenCentral()
     }
 
-    eclipse {
-        classpath {
-            defaultOutputDir = file('.ecbuild')
-        }
-    }
+   
 
     task sourcesJar(type: Jar) {
         from sourceSets.main.allSource
