@@ -9,33 +9,40 @@ buildscript {
        classpath 'net.anzix.build:gradle-plugins:1.1.0'
    }
 }
-// loadProperties taken from: http://issues.gradle.org/browse/GRADLE-1419
-def loadProperties(String sourceFileName) {
-    def config = new Properties()
-    def propFile = new File(sourceFileName)
-    if (propFile.canRead()) {
-        config.load(new FileInputStream(propFile))
-        for (Map.Entry property in config) {
-            ext[property.key] = property.value;
-        }
-    }
-}
 
 subprojects {
     apply plugin: 'groovy'
-
-
   
 
     version = "0.2.2-SNAPSHOT"
     group = "net.anzix.fork"
-    apply plugin: 'anzix-upload'
+    apply plugin: 'maven-publish'
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
 
     repositories {
         mavenCentral()
     }
+
+
+    if (!project.hasProperty("repoDir")) {
+      project.ext.repoDir = new File(project.rootProject.buildDir, "/repo").getAbsolutePath()
+    }
+
+
+
+publishing {
+   publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+   }
+   repositories {
+      maven {
+         url "file://$repoDir"
+      }
+   }
+}
 
    
 
@@ -48,61 +55,6 @@ subprojects {
          classifier = 'javadoc'
          from javadoc.destinationDir
     }
-
-    artifacts {
-        archives jar
-        archives sourcesJar
-        archives javadocJar
-    }
-/*    signing {
-        sign configurations.archives
-    }
-
-    loadProperties('signing.properties')
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                pom.project {
-                    name 'gitsemver - a plugin for gradle'
-                    packaging 'jar'
-                    description 'Provides project version setting via tags in a semveresq format'
-                    url 'https://github.com/palantir/gradle-gitsemver'
-                    scm {
-                        url 'scm:git:https://github.com/palantir/gradle-gitsemver.git'
-                    }
-                    licenses {
-                        license {
-                            name 'Apache License v2'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id 'ericlanderson'
-                            name 'Eric Anderson'
-                            email 'eanderson@palantir.com'
-                            organization 'Palantir Technologies'
-                            organizationUrl 'http://palantir.com'
-                            timezone '-8'
-                        }
-                    }
-                }
-                if (sonatypeUsername && sonatypePassword) {
-                    beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
-
-                    if (version.endsWith("-SNAPSHOT")) {
-                        repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                            authentication(userName: sonatypeUsername, password: sonatypePassword)
-                        }
-                    } else {
-                        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                            authentication(userName: sonatypeUsername, password: sonatypePassword)
-                        }
-                    }
-                }
-            }
-        }
-    }*/
 }
 
 project(":semver-java") {
@@ -111,12 +63,3 @@ project(":semver-java") {
     }
 }
 
-project(":semver-gitflow-gradle") {
-    dependencies {
-        compile gradleApi()
-        compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
-        compile localGroovy()
-        compile project(":semver-java")
-        testCompile group: "junit", name: "junit", version: "4.11"
-    }
-}
