@@ -1,11 +1,11 @@
 package com.palantir.semver;
 
-import java.io.IOException;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+
+import java.io.IOException;
 
 public class SemverGitflowPlugin implements Plugin<Project> {
 
@@ -40,8 +40,12 @@ public class SemverGitflowPlugin implements Plugin<Project> {
 
     public static String getRepoVersion(Project project)
             throws NoWorkTreeException, IOException, GitAPIException {
-        String repoLocation = project.getProjectDir().getAbsolutePath()
-                + "/.git";
+        String repoLocation;
+        if (System.getenv("GIT_DIR") != null) {
+            repoLocation = System.getenv("GIT_DIR");
+        } else {
+            repoLocation = project.getRootProject().getProjectDir().getAbsolutePath() + "/.git";
+        }
         Integer buildNumber = getBuildNumber();
         return RepoSemanticVersions.getRepoVersion(repoLocation, buildNumber);
     }
