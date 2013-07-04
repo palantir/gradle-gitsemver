@@ -1,8 +1,10 @@
-/build/
-/.gradle/
-.ecbin
+.gradle/
+.ecbuild/
+build/
+.DS_Store
+.settings/
 .classpath
 .project
-/.ecbuild
-/.settings/
 signing.properties
+.idea
+*.iml

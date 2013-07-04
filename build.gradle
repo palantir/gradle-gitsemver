@@ -1,114 +1,65 @@
-apply plugin: 'groovy'
-apply plugin: 'eclipse'
-apply plugin: 'ivy-publish'
-apply plugin: 'signing'
-apply plugin: 'maven'
-
-version = "0.1.2"
-group = "com.palantir"
-
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-repositories {
-    mavenCentral()
+buildscript {
+   repositories {
+     maven {
+       url "http://zx.anzix.net/repo"
+     }
+     mavenCentral()
+   }
+   dependencies {
+       classpath 'net.anzix.build:gradle-plugins:1.1.0'
+   }
 }
 
-dependencies {
-    compile "org.jruby:jruby-complete:1.7.3"
-    compile gradleApi()
-    compile "org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r"
-    groovy localGroovy()
-    testCompile "com.google.guava:guava:14.0"
-}
+subprojects {
+    apply plugin: 'groovy'
+  
 
-eclipse {
-    classpath {
-        defaultOutputDir = file('.ecbuild')
-    }
-}
+    version = "0.2.2-SNAPSHOT"
+    group = "net.anzix.fork"
+    apply plugin: 'maven-publish'
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
 
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-task javadocJar(type: Jar, dependsOn:javadoc) {
-     classifier = 'javadoc'
-     from javadoc.destinationDir
-}
-
-artifacts {
-    archives jar
-    archives sourcesJar
-    archives javadocJar
-}
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.4'
-}
-
-signing {
-    sign configurations.archives
-}
-
-// loadProperties taken from: http://issues.gradle.org/browse/GRADLE-1419
-def loadProperties(String sourceFileName) {
-    def config = new Properties()
-    def propFile = new File(sourceFileName)
-    if (propFile.canRead()) {
-        config.load(new FileInputStream(propFile))
-        for (Map.Entry property in config) {
-            ext[property.key] = property.value;
-        }
-    }
-}
-
-loadProperties('signing.properties')
-
-
-uploadArchives {
     repositories {
-        mavenDeployer {
-            pom.project {
-                name 'gitsemver - a plugin for gradle'
-                packaging 'jar'
-                description 'Provides project version setting via tags in a semveresq format'
-                url 'https://github.com/palantir/gradle-gitsemver'
-                scm {
-                    url 'scm:git:https://github.com/palantir/gradle-gitsemver.git'
-                }
-                licenses {
-                    license {
-                        name 'Apache License v2'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'ericlanderson'
-                        name 'Eric Anderson'
-                        email 'eanderson@palantir.com'
-                        organization 'Palantir Technologies'
-                        organizationUrl 'http://palantir.com'
-                        timezone '-8'
-                    }
-                }
-            }
-            if (sonatypeUsername && sonatypePassword) {
-                beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+        mavenCentral()
+    }
 
-                if (version.endsWith("-SNAPSHOT")) {
-                    repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
-                    }
-                } else {
-                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
-                    }
-                }
-            }
+
+    if (!project.hasProperty("repoDir")) {
+      project.ext.repoDir = new File(project.rootProject.buildDir, "/repo").getAbsolutePath()
+    }
+
+
+
+publishing {
+   publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
+   }
+   repositories {
+      maven {
+         url "file://$repoDir"
+      }
+   }
+}
+
+   
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar, dependsOn:javadoc) {
+         classifier = 'javadoc'
+         from javadoc.destinationDir
     }
 }
+
+project(":semver-java") {
+    dependencies {
+        testCompile group: "junit", name: "junit", version: "4.11"
+    }
+}
+
