@@ -45,7 +45,7 @@ Sure. Standard semver sorts words alphabetically. This is not wanted if you're g
 
 ### As a release
 
-```
+```groovy
 buildscript {
   repositories {
     mavenCentral()
@@ -64,7 +64,7 @@ buildscript {
 
 Sample addition to your project:
 
-```
+```groovy
 apply plugin: 'gitsemver'
 buildscript {
   repositories {
@@ -80,8 +80,7 @@ buildscript {
 
 Now verify that the version is being applied:
 
-```
+```bash
 $ gradle properties | grep version
 version: v0.0.0+58.g5f78071.dirty
-$
 ```
