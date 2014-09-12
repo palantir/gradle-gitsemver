@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'ivy-publish'
 
 group="com.palantir.gradle"
+version="1.0.0"
 
 repositories {
   mavenCentral()
@@ -15,16 +16,16 @@ dependencies {
 }
 
 publishing {
-	publications {
-		ivy(IvyPublication) {
-			from components.java
-		}
-	}
+  publications {
+    ivy(IvyPublication) {
+      from components.java
+    }
+  }
 
-	repositories {
-		ivy {
-			url "$buildDir/dist/"
-		}
-	}
+  repositories {
+    ivy {
+      url "$buildDir/dist/"
+    }
+  }
 }
 
