@@ -1,0 +1,16 @@
+**.gradle/
+**.ecbuild/
+**build/
+**bin/
+**.settings/
+**.project
+**.classpath
+**.DS_Store
+**.swp
+### Intellij ###
+.idea/
+
+## File-based project format
+*.ipr
+*.iws
+*.iml
