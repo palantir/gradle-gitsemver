@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'ivy-publish'
 
-group="com.palantir.gradle"
+group="com.palantir"
 version="1.0.0"
 
 repositories {
