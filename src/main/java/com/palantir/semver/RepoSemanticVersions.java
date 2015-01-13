@@ -44,4 +44,11 @@ public class RepoSemanticVersions {
             versionFactory = new TagBasedVersionFactory(prefix);
         return versionFactory.createVersion(repo, buildNumber);
     }
+
+    public static String getRepoTopoVersion(String repoLocation, Integer buildNumber)
+            throws NoWorkTreeException, IOException, GitAPIException {
+        Repository repo = getRepo(repoLocation);
+        TagBasedVersionFactory versionFactory = new TagBasedVersionFactory();
+        return versionFactory.createTopoVersion(repo, buildNumber);
+    }
 }

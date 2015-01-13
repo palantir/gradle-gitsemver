@@ -28,6 +28,18 @@ public class SemverConvention {
         }
     }
 
+    public String topoSemverVersion(Closure configureClosure) {
+        try {
+            return SemverGitflowPlugin.getRepoTopoVersion(project);
+        } catch (NoWorkTreeException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        } catch (IOException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        } catch (GitAPIException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        }
+    }
+
     public String prefixSemverVersion(String prefix) {
         if (prefix == null || prefix.length() == 0) {
             throw new IllegalArgumentException("No prefix specified for prefixSemverVersion");

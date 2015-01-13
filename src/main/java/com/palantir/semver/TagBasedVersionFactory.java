@@ -27,11 +27,28 @@ public class TagBasedVersionFactory {
     public String createVersion(Repository repo, Integer buildNumber)
         throws MissingObjectException, IncorrectObjectTypeException, IOException,
                           NoWorkTreeException, GitAPIException {
+        return createVersion(repo, buildNumber, false);
+    }
+
+    public String createTopoVersion(Repository repo, Integer buildNumber)
+        throws MissingObjectException, IncorrectObjectTypeException, IOException,
+                          NoWorkTreeException, GitAPIException {
+        return createVersion(repo, buildNumber, true);
+    }
+
+    public String createVersion(Repository repo, Integer buildNumber, boolean topo)
+        throws MissingObjectException, IncorrectObjectTypeException, IOException,
+                          NoWorkTreeException, GitAPIException {
             if (repo == null) {
                 throw new SemverGitflowPlugin.VersionApplicationException(
                         "Project is not in a Git repository. Cannot use semver versioning in a non repository.");
             }
-            TagVersionAndCount latestTagAndCount = Tags.getLatestTagVersionAndCount(repo, prefix);
+            TagVersionAndCount latestTagAndCount;
+            if (topo) {
+                latestTagAndCount = Tags.getTopoTagVersionAndCount(repo, prefix);
+            } else {
+                latestTagAndCount = Tags.getLatestTagVersionAndCount(repo, prefix);
+            }
             String headCommitAbbreviation = GitRepos.getHeadCommitIdAbbreviation(repo);
             boolean isDirty = GitRepos.isDirty(repo);
             return generateVersion(latestTagAndCount, headCommitAbbreviation, buildNumber, isDirty);

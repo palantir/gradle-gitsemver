@@ -36,6 +36,18 @@ public class Tags {
         }
     }
 
+    public static TagVersionAndCount getTopoTagVersionAndCount(Repository repo, String prefix)
+            throws MissingObjectException, IncorrectObjectTypeException, IOException {
+        TagAndVersion latestTag = getLatestTopoTag(repo, prefix);
+        if (latestTag == null) {
+            throw new SemverGitflowPlugin.VersionApplicationException(
+                    "Cannot find any matching tags in history. You must have tags of form v0.1.2 in order to use semver");
+        } else {
+            int count = getNumberOfCommitsSinceTag(repo, latestTag.tag);
+            return new TagVersionAndCount(latestTag.version.getOriginalVersion(), count);
+        }
+    }
+
     private static int getNumberOfCommitsSinceTag(Repository repo, String lastTag)
             throws MissingObjectException, IncorrectObjectTypeException, IOException {
         try {
@@ -45,6 +57,12 @@ public class Tags {
         } catch (NullPointerException e) {
             return 0;
         }
+    }
+
+    private static TagAndVersion getLatestTopoTag(Repository repo, String prefix) throws MissingObjectException,
+            IncorrectObjectTypeException, IOException {
+        Map<ObjectId, Set<String>> allTags = getAllTags(repo);
+        return findLatestTopoTag(repo, allTags, prefix);
     }
 
     private static TagAndVersion getLatestTag(Repository repo, String prefix) throws MissingObjectException,
@@ -80,6 +98,39 @@ public class Tags {
             return ref.getObjectId();
         } else {
             return ref.getPeeledObjectId();
+        }
+    }
+
+    private static TagAndVersion findLatestTopoTag(Repository repo, Map<ObjectId, Set<String>> allTags, String prefix)
+            throws MissingObjectException, IncorrectObjectTypeException, IOException {
+
+        try {
+            RevWalk walk = new RevWalk(repo);
+            walk.markStart(walk.parseCommit(GitRepos.getHeadObjectId(repo)));
+            for (RevCommit commit : walk) {
+                ObjectId commitId = commit.getId();
+                // Find the very first tag in history
+                if (allTags.containsKey(commitId)) {
+                    List<TagAndVersion> foundTags = new LinkedList<TagAndVersion>();
+                    // If there are more than one tag for this commit, choose the lexographically superior one
+                    for (String tagName : allTags.get(commitId)) {
+                        String tagVersion = GitRepos.stripVFromVersionString(tagName);
+                        foundTags.add(new TagAndVersion(tagName, SemanticVersions.parse(tagVersion)));
+                    }
+                    Collections.sort(foundTags);
+                    return foundTags.get(foundTags.size() - 1);
+                }
+            }
+            // No tags found - return null
+            return null;
+        } catch (NullPointerException e) {
+            return new TagAndVersion("0.0.0", new DefaultSemanticVersion(
+                    "0.0.0",
+                    0,
+                    0,
+                    0,
+                    null,
+                    null));
         }
     }
 
