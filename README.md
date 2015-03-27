@@ -1,4 +1,4 @@
-# gitsemver plugin for gradle
+# Gitsemver plugin for gradle
 
 ## Why?
 
@@ -6,13 +6,14 @@ To create an alternative to using `git describe` for automatic versioning that w
 
 ## How does it work?
 
-1. Find all tags of format v?\d+\.\d+\.\d+ accessable from HEAD
-2. Use a slightly modified semantic versioning scheme to sort tags
-3. Choose the 'largest' tag and append to the build portion of version if tag != HEAD:
-   * number of commits since that tag
+1. Finds all tags of format v?\d+\.\d+\.\d+ accessible from HEAD
+2. Uses a slightly modified semantic versioning scheme to sort tags
+3. Chooses the 'largest' tag
+4. If the tag is not at HEAD, it appends to the version:
+   * the number of commits since that tag
    * the git hash in the format g01ABCDEF
    * the dirty state of the repo
-4. Use the tag itself without any appendix if tag == HEAD
+4. If the tag is at HEAD, then nothing is appended
 
 ### Example:
 
@@ -40,7 +41,7 @@ Finally, if I were on the develop branch and had uncommitted changes the version
 
 ### Can you explain your modified semver sort?
 
-Sure. Standard semver sorts words alphabetically. This is not wanted if you're going to be creating tags like `v0.1.0-dev` and `v0.1.0-alpha`. You want to alpha sort everything except 'dev', 'alpha', 'beta', and 'rc', where those are ordered and always bigger than any other word. Thats it.
+Sure. Standard semantic versioning sorts words alphabetically. This is not wanted if you're going to be creating tags like `v0.1.0-dev` and `v0.1.0-alpha`. You want to alpha sort everything except 'dev', 'alpha', 'beta', and 'rc', where those are ordered and always bigger than any other word. Thats it.
 
 ## Adding to your build
 
@@ -63,12 +64,11 @@ Now verify that the version is being applied:
 ```
 $ gradle properties | grep version
 version: v0.0.0-58-g5f78071.dirty
-$
 ```
 
 ## Prefix tags
 
-gradle-gitsemver also supports a special mode of operatino where it looks for tags with a given prefix. This can be done using the `prefixSemverVersion("prefix")` convention:
+Gitsemver supports a special mode of operation where it looks for tags with a given prefix. This can be done using the `prefixSemverVersion("prefix")` convention:
 
 ```
 apply plugin: 'gitsemver'
@@ -78,3 +78,15 @@ version prefixSemverVersion("projecta")
 This will look for all tags with form `projecta-v1.2.3` and ignore everything else. If there are no tags of this form in the repo, it will error out.
 
 This is useful in cases in which multiple subprojects need to be independently versioned.
+
+## Topological Semver
+
+It's also possible to have the tags sorted by how far from HEAD they are. To use the topological sorting, copy this into your build file:
+
+```
+apply plugin: 'gitsemver'
+version topoSemverVersion("prefix")
+```
+where prefix is the prefix for the tags you want to search (see Prefix tags).
+
+Topological sorting will then find the closest tag to HEAD that also has matches the prefix, and use that tag as the base for the version. 
