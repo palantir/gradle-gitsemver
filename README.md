@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/palantir/maven/gradle-gitsemver/images/download.svg) ](https://bintray.com/palantir/maven/gradle-gitsemver/_latestVersion)
+
 # Gitsemver plugin for gradle
 
 ## Why?
