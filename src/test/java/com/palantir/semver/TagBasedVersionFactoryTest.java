@@ -71,13 +71,13 @@ public class TagBasedVersionFactoryTest {
     @Test(expected = SemverGitflowPlugin.VersionApplicationException.class)
     public void testNoTags() throws NoWorkTreeException, IOException,
             GitAPIException {
-        String version = versionFactory.createVersion(repo, null);
+        SemverVersion version = versionFactory.createVersion(repo, null);
     }
 
     @Test(expected = SemverGitflowPlugin.VersionApplicationException.class)
     public void testNoRepo() throws NoWorkTreeException, IOException,
             GitAPIException {
-        String version = versionFactory.createVersion(null, null);
+        SemverVersion version = versionFactory.createVersion(null, null);
     }
 
 
@@ -156,7 +156,7 @@ public class TagBasedVersionFactoryTest {
         dirtyRepo();
         Assert.assertEquals(
                 "0.1.0+dirty",
-                versionFactory.createVersion(repo, null));
+                versionFactory.createVersion(repo, null).toString());
     }
 
     @Test
@@ -194,10 +194,10 @@ public class TagBasedVersionFactoryTest {
     private void validateStableTag(String expectedVersion)
             throws NoWorkTreeException, MissingObjectException,
             IncorrectObjectTypeException, IOException, GitAPIException {
-        String version = versionFactory.createVersion(repo, null);
-        Assert.assertEquals(expectedVersion, version);
-        String versionBuild = versionFactory.createVersion(repo, 123);
-        Assert.assertEquals(expectedVersion, versionBuild);
+        SemverVersion version = versionFactory.createVersion(repo, null);
+        Assert.assertEquals(expectedVersion, version.toString());
+        SemverVersion versionBuild = versionFactory.createVersion(repo, 123);
+        Assert.assertEquals(expectedVersion, versionBuild.toString());
     }
 
     private void validateUnstable(String expectedVersion,
@@ -210,15 +210,15 @@ public class TagBasedVersionFactoryTest {
         String dirtyText = (dirty == Dirty.YES) ? ".dirty" : "";
         String expected = expectedVersion + firstModifier + commitCount + "+g"
                 + headCommitId + dirtyText;
-        String version = versionFactory.createVersion(repo, null);
-        Assert.assertEquals(expected, version);
+        SemverVersion version = versionFactory.createVersion(repo, null);
+        Assert.assertEquals(expected, version.toString());
         Integer buildNumber = 123;
         String expectedWithBuildNumber = expectedVersion + firstModifier
                 + commitCount + "+g" + headCommitId + ".b" + buildNumber
                 + dirtyText;
         Assert.assertEquals(
                 expectedWithBuildNumber,
-                versionFactory.createVersion(repo, buildNumber));
+                versionFactory.createVersion(repo, buildNumber).toString());
     }
 
     private void dirtyRepo() throws IOException, NoFilepatternException,

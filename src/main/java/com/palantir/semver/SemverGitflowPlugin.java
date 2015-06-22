@@ -34,7 +34,7 @@ public class SemverGitflowPlugin implements Plugin<Project> {
         printStatusTask.setProject(project);
     }
 
-    public static String getRepoVersion(Project project, String prefix)
+    public static SemverVersion getRepoVersion(Project project, String prefix)
             throws NoWorkTreeException, IOException, GitAPIException {
         String repoLocation = project.getProjectDir().getAbsolutePath()
                 + "/.git";
@@ -42,7 +42,7 @@ public class SemverGitflowPlugin implements Plugin<Project> {
         return RepoSemanticVersions.getRepoVersion(repoLocation, buildNumber, prefix);
     }
 
-    public static String getRepoVersion(Project project)
+    public static SemverVersion getRepoVersion(Project project)
             throws NoWorkTreeException, IOException, GitAPIException {
         String repoLocation = project.getProjectDir().getAbsolutePath()
                 + "/.git";
@@ -50,7 +50,7 @@ public class SemverGitflowPlugin implements Plugin<Project> {
         return RepoSemanticVersions.getRepoVersion(repoLocation, buildNumber);
     }
 
-    public static String getRepoTopoVersion(Project project)
+    public static SemverVersion getRepoTopoVersion(Project project)
             throws NoWorkTreeException, IOException, GitAPIException {
         String repoLocation = project.getProjectDir().getAbsolutePath()
                 + "/.git";

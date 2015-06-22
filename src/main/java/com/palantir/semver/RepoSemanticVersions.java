@@ -28,12 +28,12 @@ public class RepoSemanticVersions {
         return repo;
     }
 
-    public static String getRepoVersion(String repoLocation, Integer buildNumber)
+    public static SemverVersion getRepoVersion(String repoLocation, Integer buildNumber)
             throws NoWorkTreeException, IOException, GitAPIException {
         return getRepoVersion(repoLocation, buildNumber, null);
     }
 
-    public static String getRepoVersion(String repoLocation, Integer buildNumber, String prefix)
+    public static SemverVersion getRepoVersion(String repoLocation, Integer buildNumber, String prefix)
         throws NoWorkTreeException, IOException, GitAPIException {
         Repository repo = getRepo(repoLocation);
 
@@ -45,7 +45,7 @@ public class RepoSemanticVersions {
         return versionFactory.createVersion(repo, buildNumber);
     }
 
-    public static String getRepoTopoVersion(String repoLocation, Integer buildNumber)
+    public static SemverVersion getRepoTopoVersion(String repoLocation, Integer buildNumber)
             throws NoWorkTreeException, IOException, GitAPIException {
         Repository repo = getRepo(repoLocation);
         TagBasedVersionFactory versionFactory = new TagBasedVersionFactory();

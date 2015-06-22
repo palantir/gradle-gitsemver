@@ -24,19 +24,19 @@ public class TagBasedVersionFactory {
         this.prefix = prefix;
     }
 
-    public String createVersion(Repository repo, Integer buildNumber)
+    public SemverVersion createVersion(Repository repo, Integer buildNumber)
         throws MissingObjectException, IncorrectObjectTypeException, IOException,
                           NoWorkTreeException, GitAPIException {
         return createVersion(repo, buildNumber, false);
     }
 
-    public String createTopoVersion(Repository repo, Integer buildNumber)
+    public SemverVersion createTopoVersion(Repository repo, Integer buildNumber)
         throws MissingObjectException, IncorrectObjectTypeException, IOException,
                           NoWorkTreeException, GitAPIException {
         return createVersion(repo, buildNumber, true);
     }
 
-    public String createVersion(Repository repo, Integer buildNumber, boolean topo)
+    public SemverVersion createVersion(Repository repo, Integer buildNumber, boolean topo)
         throws MissingObjectException, IncorrectObjectTypeException, IOException,
                           NoWorkTreeException, GitAPIException {
             if (repo == null) {
@@ -54,7 +54,7 @@ public class TagBasedVersionFactory {
             return generateVersion(latestTagAndCount, headCommitAbbreviation, buildNumber, isDirty);
     }
 
-    private String generateVersion(TagVersionAndCount latestTagAndCount,
+    private SemverVersion generateVersion(TagVersionAndCount latestTagAndCount,
                                    String headCommitAbbreviation,
                                    Integer buildNumber,
                                    boolean isDirty) {
@@ -67,7 +67,8 @@ public class TagBasedVersionFactory {
             Pattern versionPattern = Pattern.compile(versionRegex);
             Matcher matcher = versionPattern.matcher(matchingTag);
             if (!matcher.matches()) {
-                return "0.0.0";
+                //return "0.0.0";
+                return new SemverVersion("0.0.0", "0.0.0", "000000000000", 0, null, false, false);
             }
             version = matcher.group(1);
         } else {
@@ -91,7 +92,10 @@ public class TagBasedVersionFactory {
                 versionString.append(".dirty");
             }
         }
-        return versionString.toString();
+        SemverVersion versionObject = new SemverVersion(versionString.toString(), version, headCommitAbbreviation, latestTagAndCount.getCount(),
+                buildNumber, isDirty, isVersionStableRelease(latestTagAndCount));
+        return versionObject;
+        //return versionString.toString();
     }
 
     private String getFirstSeparator(TagVersionAndCount latestTag) {
