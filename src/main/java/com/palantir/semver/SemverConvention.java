@@ -16,7 +16,7 @@ public class SemverConvention {
         this.project = project;
     }
 
-    public String semverVersion(Closure configureClosure) {
+    public SemverVersion semverVersion(Closure configureClosure) {
         try {
             return SemverGitflowPlugin.getRepoVersion(project);
         } catch (NoWorkTreeException e) {
@@ -28,7 +28,7 @@ public class SemverConvention {
         }
     }
 
-    public String topoSemverVersion(Closure configureClosure) {
+    public SemverVersion topoSemverVersion(Closure configureClosure) {
         try {
             return SemverGitflowPlugin.getRepoTopoVersion(project);
         } catch (NoWorkTreeException e) {
@@ -40,7 +40,7 @@ public class SemverConvention {
         }
     }
 
-    public String prefixSemverVersion(String prefix) {
+    public SemverVersion prefixSemverVersion(String prefix) {
         if (prefix == null || prefix.length() == 0) {
             throw new IllegalArgumentException("No prefix specified for prefixSemverVersion");
         }
