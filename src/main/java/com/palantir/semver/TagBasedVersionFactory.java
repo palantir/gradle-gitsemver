@@ -67,7 +67,6 @@ public class TagBasedVersionFactory {
             Pattern versionPattern = Pattern.compile(versionRegex);
             Matcher matcher = versionPattern.matcher(matchingTag);
             if (!matcher.matches()) {
-                //return "0.0.0";
                 return new SemverVersion("0.0.0", "0.0.0", "000000000000", 0, null, false, false);
             }
             version = matcher.group(1);
@@ -93,9 +92,8 @@ public class TagBasedVersionFactory {
             }
         }
         SemverVersion versionObject = new SemverVersion(versionString.toString(), version, headCommitAbbreviation, latestTagAndCount.getCount(),
-                buildNumber, isDirty, isVersionStableRelease(latestTagAndCount));
+                buildNumber, isDirty);
         return versionObject;
-        //return versionString.toString();
     }
 
     private String getFirstSeparator(TagVersionAndCount latestTag) {

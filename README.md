@@ -98,11 +98,10 @@ The plugin's version methods return a ``SemverVersion`` object and not a ``Strin
 ```java
 class SemverVersion {
   String toString()  // The full version string
-  String getTagVersion() // The matched tagged
-  String getHeadCommitHash() // The git commit hash of the HEAD commit
-  Integer getCommitCount() // The number of commits HEAD is from the matched tag
-  Integer getBuildNumber() // The value of the BUILD_NUMBER environment variable
-  boolean isDirty() // Is the git repo dirty?
-  boolean isVersionStableRelease() // Does the full version represent a stable version?
+  String tagName // The matched tagged
+  String headCommitHash // The git commit hash of the HEAD commit
+  Integer commitCount // The number of commits HEAD is from the matched tag
+  Integer buildNumber // The value of the BUILD_NUMBER environment variable
+  boolean dirty // Is the git repo dirty?
 }
 ```

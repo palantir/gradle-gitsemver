@@ -3,30 +3,28 @@ package com.palantir.semver;
 public class SemverVersion {
 
     private final String fullVersion;
-    private final String tagVersion;
+    private final String tagName;
     private final String headCommitHash;
     private final Integer count;
     private final Integer buildNumber;
-    private final boolean isDirty;
-    private final boolean isVersionStableRelease;
+    private final boolean dirty;
     
-    public SemverVersion (String fullVersion, String tagVersion, String headCommitHash,
-            Integer count, Integer buildNumber, boolean isDirty, boolean isVersionStableRelease) {
+    public SemverVersion (String fullVersion, String tagName, String headCommitHash,
+            Integer count, Integer buildNumber, boolean dirty) {
         this.fullVersion = fullVersion;
-        this.tagVersion = tagVersion;
+        this.tagName = tagName;
         this.headCommitHash = headCommitHash;
         this.count = count;
         this.buildNumber = buildNumber;
-        this.isDirty = isDirty;
-        this.isVersionStableRelease = isVersionStableRelease;
+        this.dirty = dirty;
     }
     
     public String toString() {
         return this.fullVersion;
     }
     
-    public String getTagVersion() {
-        return this.tagVersion;
+    public String getTagName() {
+        return this.tagName;
     }
     
     public String getHeadCommitHash() {
@@ -41,12 +39,7 @@ public class SemverVersion {
         return this.buildNumber;
     }
     
-    public boolean isDirty() {
-        return this.isDirty;
+    public boolean getDirty() {
+        return this.dirty;
     }
-    
-    public boolean isVersionStableRelease() {
-        return this.isVersionStableRelease;
-    }
-    
 }
