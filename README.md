@@ -1,4 +1,4 @@
-# Gitsemver plugin for gradle [ ![Download](https://api.bintray.com/packages/palantir/maven/gradle-gitsemver/images/download.svg) ](https://bintray.com/palantir/maven/gradle-gitsemver/_latestVersion)
+# Gitsemver plugin for gradle [![Build Status](https://travis-ci.org/palantir/gradle-gitsemver.svg?branch=master)](https://travis-ci.org/palantir/gradle-gitsemver)
 
 ## Why?
 
@@ -45,13 +45,16 @@ Sure. Standard semantic versioning sorts words alphabetically. This is not wante
 
 ## Adding to your build
 
-```
+```gradle
 buildscript {
   repositories {
     mavenCentral()
+    maven {
+      url "http://dl.bintray.com/palantir/releases"
+    }
   }
   dependencies {
-    classpath 'com.palantir:gradle-gitsemver:0.1.2'
+    classpath 'com.palantir:gradle-gitsemver:0.4.0'
   }
 }
 
@@ -61,7 +64,7 @@ version semverVersion()
 
 Now verify that the version is being applied:
 
-```
+```console
 $ gradle properties | grep version
 version: v0.0.0-58-g5f78071.dirty
 ```
@@ -70,7 +73,7 @@ version: v0.0.0-58-g5f78071.dirty
 
 Gitsemver supports a special mode of operation where it looks for tags with a given prefix. This can be done using the `prefixSemverVersion("prefix")` convention:
 
-```
+```gradle
 apply plugin: 'gitsemver'
 version prefixSemverVersion("projecta")
 ```
@@ -83,7 +86,7 @@ This is useful in cases in which multiple subprojects need to be independently v
 
 It's also possible to have the tags sorted by how far from HEAD they are. To use the topological sorting, copy this into your build file:
 
-```
+```gradle
 apply plugin: 'gitsemver'
 version topoSemverVersion("prefix")
 ```
