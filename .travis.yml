@@ -1,0 +1,16 @@
+language: java
+jdk:
+- oraclejdk7
+cache:
+  directories:
+  - ".gradle"
+script:
+- ./gradlew build test publish --stacktrace
+deploy:
+  provider: releases
+  api_key:
+    secure: VfPbZdP6SYlhWqbm0RJN98lqaGNi4f1CTc8pGski5zPt+bKUiff7Ii3+FLGPAtkEhbBQu61o2tcUU5gAvtGIFq0S3VoLhw57HXJIdN5zC6lQUqAr9ODN7N7mJXSbX92XsomW+b24SMrT7zCEfTAIHSKSh8MG4RZLFRa5Y2xP+BzTCqoai0LHV0P465TOb+3mT3LYjeQ89UtmZbqPJnZxHnN9ma9mkZge8OFp+DrjLiQVoBsAV4TpruQaq9VDM86oJ6s8O+KyhLtYKicc4GW/gKHVl4uhyJ2tEbRvqTYPVOw1fhN1VC/qxk2tYwfdgz1FLKcax/v+Lo29Qx6PqqLjGAzU5jRbWDgVOHzfti1gyZqQ+jl2aFfyXE+xx+xfLyc4uMtZCuIVByy4xZBUGlpQlHR1iW6Y87Ooa8GPagvtBcdncLf8y6kQIBANxxhsu1+mqlEIVN7Su3LzWeFU02x8j8w5D0Ng62WnAGqp55zyBpfmfH//8r0ymu8bBhcSmsByTHn3nvbbVv1cehY1dJ3BcmF7VAuC1gT3Xg1Q8OdyRkdfeRwDY/aK9cSXYk90Znn7ywlZOzpcO+LMtO8nrCK/AtexvEOyz7pTs2VKNq1HITpQ3lEEpiEilDXPeqYadlopyoaV2+DK3dgktwHJoc4o6izexCxYdSPXXnQopqjwjw0=
+  file: build/artifacts/*
+  file_glob: true
+  on:
+    tags: true
