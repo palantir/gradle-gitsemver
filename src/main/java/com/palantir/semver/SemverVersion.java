@@ -4,17 +4,17 @@ public class SemverVersion {
 
     private final String fullVersion;
     private final String tagName;
-    private final String headCommitHash;
-    private final Integer count;
+    private final String gitHash;
+    private final Integer commitCountFromTag;
     private final Integer buildNumber;
     private final boolean dirty;
     
-    public SemverVersion (String fullVersion, String tagName, String headCommitHash,
-            Integer count, Integer buildNumber, boolean dirty) {
+    public SemverVersion (String fullVersion, String tagName, String gitHash,
+            Integer commitCountFromTag, Integer buildNumber, boolean dirty) {
         this.fullVersion = fullVersion;
         this.tagName = tagName;
-        this.headCommitHash = headCommitHash;
-        this.count = count;
+        this.gitHash = gitHash;
+        this.commitCountFromTag = commitCountFromTag;
         this.buildNumber = buildNumber;
         this.dirty = dirty;
     }
@@ -27,12 +27,12 @@ public class SemverVersion {
         return this.tagName;
     }
     
-    public String getHeadCommitHash() {
-        return this.headCommitHash;
+    public String getGitHash() {
+        return this.gitHash;
     }
     
     public Integer getCommitCount() {
-        return this.count;
+        return this.commitCountFromTag;
     }
     
     public Integer getBuildNumber() {
