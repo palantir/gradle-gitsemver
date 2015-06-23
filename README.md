@@ -89,4 +89,20 @@ version topoSemverVersion("prefix")
 ```
 where prefix is the prefix for the tags you want to search (see Prefix tags).
 
-Topological sorting will then find the closest tag to HEAD that also has matches the prefix, and use that tag as the base for the version. 
+Topological sorting will then find the closest tag to HEAD that also has matches the prefix, and use that tag as the base for the version.
+
+## Version Object
+
+The plugin's version methods return a ``SemverVersion`` object and not a ``String``.  It can be used as a parameter for Gradle's `version`.  Making this an object allows for pulling out pieces of the version string for other uses (if desired).
+
+```java
+class SemverVersion {
+  String toString()  // The full version string
+  String getTagVersion() // The matched tagged
+  String getHeadCommitHash() // The git commit hash of the HEAD commit
+  Integer getCommitCount() // The number of commits HEAD is from the matched tag
+  Integer getBuildNumber() // The value of the BUILD_NUMBER environment variable
+  boolean isDirty() // Is the git repo dirty?
+  boolean isVersionStableRelease() // Does the full version represent a stable version?
+}
+```
