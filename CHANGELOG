@@ -2,6 +2,11 @@ CHANGELOG
 
 Future Version
 ======
+-Breaking: rename topoSemverVersion() to semverVersionTopo()
+-Breaking: rename prefixSemverVersion() to semverVersionPrefix()
+
+0.5.0
+======
 -Breaking: printVersion and printStatus task not automatically applied.
   * Use addPrintVersionTask() and addPrintStatusTask() to do so
 
