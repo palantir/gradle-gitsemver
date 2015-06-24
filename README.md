@@ -1,4 +1,4 @@
-# Gitsemver plugin for gradle [![Build Status](https://travis-ci.org/palantir/gradle-gitsemver.svg?branch=master)](https://travis-ci.org/palantir/gradle-gitsemver)
+# Gitsemver plugin for gradle [![Build Status](https://travis-ci.org/palantir/gradle-gitsemver.svg?branch=master)](https://travis-ci.org/palantir/gradle-gitsemver) [![Download](https://api.bintray.com/packages/palantir/releases/gradle-gitsemver/images/download.svg) ](https://bintray.com/palantir/releases/gradle-gitsemver/_latestVersion)
 
 ## Why?
 
