@@ -54,7 +54,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'com.palantir:gradle-gitsemver:0.4.0'
+    classpath 'com.palantir:gradle-gitsemver:0.6.0'
   }
 }
 
