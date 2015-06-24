@@ -71,11 +71,11 @@ version: v0.0.0-58-g5f78071.dirty
 
 ## Prefix tags
 
-Gitsemver supports a special mode of operation where it looks for tags with a given prefix. This can be done using the `prefixSemverVersion("prefix")` convention:
+Gitsemver supports a special mode of operation where it looks for tags with a given prefix. This can be done using the `semverVersionPrefix("prefix")` convention:
 
 ```gradle
 apply plugin: 'gitsemver'
-version prefixSemverVersion("projecta")
+version semverVersionPrefix("projecta")
 ```
 
 This will look for all tags with form `projecta-v1.2.3` and ignore everything else. If there are no tags of this form in the repo, it will error out.
@@ -88,7 +88,7 @@ It's also possible to have the tags sorted by how far from HEAD they are. To use
 
 ```gradle
 apply plugin: 'gitsemver'
-version topoSemverVersion("prefix")
+version semverVersionTopo("prefix")
 ```
 where prefix is the prefix for the tags you want to search (see Prefix tags).
 
