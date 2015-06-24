@@ -2,6 +2,9 @@ CHANGELOG
 
 Future Version
 ======
+
+0.6.0
+======
 -Breaking: rename topoSemverVersion() to semverVersionTopo()
 -Breaking: rename prefixSemverVersion() to semverVersionPrefix()
 
