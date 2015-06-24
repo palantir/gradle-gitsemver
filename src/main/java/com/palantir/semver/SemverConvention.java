@@ -16,6 +16,15 @@ public class SemverConvention {
         this.project = project;
     }
 
+    public void addPrintVersionTask() {
+        this.project.getTasks().create("printVersion", PrintVersionTask.class);
+    }
+
+    public void addPrintStatusTask() {
+        PrintGitStatusTask printStatusTask = this.project.getTasks().create("printStatus", PrintGitStatusTask.class);
+        printStatusTask.setProject(this.project);
+    }
+
     public SemverVersion semverVersion(Closure configureClosure) {
         try {
             return SemverGitflowPlugin.getRepoVersion(project);

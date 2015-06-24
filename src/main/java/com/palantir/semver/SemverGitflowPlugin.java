@@ -18,20 +18,9 @@ public class SemverGitflowPlugin implements Plugin<Project> {
         try {
             SemverConvention convention = new SemverConvention(project);
             project.getConvention().getPlugins().put("semver", convention);
-            addPrintVersionTask(project);
-            addPrintStatusTask(project);
         } catch (NoWorkTreeException e) {
             throw new VersionApplicationException(e);
         }
-    }
-
-    private static void addPrintVersionTask(Project project) {
-        project.getTasks().create("printVersion", PrintVersionTask.class);
-    }
-
-    private static void addPrintStatusTask(Project project) {
-        PrintGitStatusTask printStatusTask = project.getTasks().create("printStatus", PrintGitStatusTask.class);
-        printStatusTask.setProject(project);
     }
 
     public static SemverVersion getRepoVersion(Project project, String prefix)

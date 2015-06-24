@@ -1,0 +1,10 @@
+CHANGELOG
+
+Future Version
+======
+-Breaking: printVersion and printStatus task not automatically applied.
+  * Use addPrintVersionTask() and addPrintStatusTask() to do so
+
+0.4.0
+======
+-Add a SemverVersion object that exposes various version information
