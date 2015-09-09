@@ -88,11 +88,10 @@ It's also possible to have the tags sorted by how far from HEAD they are. To use
 
 ```gradle
 apply plugin: 'gitsemver'
-version semverVersionTopo("prefix")
+version semverVersionTopo()
 ```
-where prefix is the prefix for the tags you want to search (see Prefix tags).
 
-Topological sorting will then find the closest tag to HEAD that also has matches the prefix, and use that tag as the base for the version.
+Topological sorting will then find the closest tag to HEAD, and use that tag as the base for the version.
 
 ## Version Object
 
