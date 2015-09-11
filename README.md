@@ -91,7 +91,16 @@ apply plugin: 'gitsemver'
 version semverVersionTopo()
 ```
 
-Topological sorting will then find the closest tag to HEAD, and use that tag as the base for the version.
+Topological sorting will then find the closest tag to HEAD, and use that tag as the base for the version.  It will strip off the prefix.
+
+## Topological Prefixed Semver
+
+It's possible to combine the prefix and topological methods.  This will work just like topological semver except will choose the closest one with the prefix.
+
+```gradle
+apply plugin: 'gitsemver'
+version semverVersionTopoPrefix('myprefixed')
+```
 
 ## Version Object
 

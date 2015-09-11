@@ -47,6 +47,14 @@ public class SemverGitflowPlugin implements Plugin<Project> {
         return RepoSemanticVersions.getRepoTopoVersion(repoLocation, buildNumber);
     }
 
+    public static SemverVersion getRepoTopoVersion(Project project, String prefix)
+            throws NoWorkTreeException, IOException, GitAPIException {
+        String repoLocation = project.getProjectDir().getAbsolutePath()
+                + "/.git";
+        Integer buildNumber = getBuildNumber();
+        return RepoSemanticVersions.getRepoTopoVersion(repoLocation, buildNumber, prefix);
+    }
+
     private static Integer getBuildNumber() {
         String buildNumber = System.getenv(BUILD_NUMBER_PROPERTY);
         if (buildNumber == null) {

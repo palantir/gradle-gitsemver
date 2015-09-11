@@ -47,8 +47,19 @@ public class RepoSemanticVersions {
 
     public static SemverVersion getRepoTopoVersion(String repoLocation, Integer buildNumber)
             throws NoWorkTreeException, IOException, GitAPIException {
+        return getRepoTopoVersion(repoLocation, buildNumber, null);
+    }
+
+    public static SemverVersion getRepoTopoVersion(String repoLocation, Integer buildNumber, String prefix)
+            throws NoWorkTreeException, IOException, GitAPIException {
         Repository repo = getRepo(repoLocation);
-        TagBasedVersionFactory versionFactory = new TagBasedVersionFactory();
+
+        TagBasedVersionFactory versionFactory;
+        if (prefix == null) {
+            versionFactory = new TagBasedVersionFactory();
+        } else {
+            versionFactory = new TagBasedVersionFactory(prefix);
+        }
         return versionFactory.createTopoVersion(repo, buildNumber);
     }
 }

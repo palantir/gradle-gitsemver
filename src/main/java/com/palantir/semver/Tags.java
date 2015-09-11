@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
@@ -17,6 +18,9 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevWalk;
+
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class Tags {
 
@@ -62,7 +66,21 @@ public class Tags {
     private static TagAndVersion getLatestTopoTag(Repository repo, String prefix) throws MissingObjectException,
             IncorrectObjectTypeException, IOException {
         Map<ObjectId, Set<String>> allTags = getAllTags(repo);
-        return findLatestTopoTag(repo, allTags, prefix);
+        Map<ObjectId, Set<String>> allTagsPrefixed = Maps.newHashMap();
+        if (prefix != null) {
+            for (Entry<ObjectId, Set<String>> entry : allTags.entrySet()) {
+                Set<String> tags = Sets.newHashSet();
+                for (String tag : entry.getValue()) {
+                    if (tag.startsWith(prefix)) {
+                        tags.add(tag);
+                    }
+                }
+                if (tags.size() != 0) {
+                    allTagsPrefixed.put(entry.getKey(), tags);
+                }
+            }
+        }
+        return findLatestTopoTag(repo, allTagsPrefixed, prefix);
     }
 
     private static TagAndVersion getLatestTag(Repository repo, String prefix) throws MissingObjectException,
@@ -115,7 +133,11 @@ public class Tags {
                     // If there are more than one tag for this commit, choose the lexographically superior one
                     for (String tagName : allTags.get(commitId)) {
                         String tagVersion = GitRepos.stripVFromVersionString(tagName);
-                        foundTags.add(new TagAndVersion(tagName, SemanticVersions.parse(tagVersion)));
+                        if (prefix == null) {
+                            foundTags.add(new TagAndVersion(tagName, SemanticVersions.parse(tagVersion)));
+                        } else {
+                            foundTags.add(new TagAndVersion(tagName, SemanticVersions.parse(prefix, tagVersion)));
+                        }
                     }
                     Collections.sort(foundTags);
                     return foundTags.get(foundTags.size() - 1);
