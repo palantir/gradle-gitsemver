@@ -2,6 +2,7 @@ CHANGELOG
 
 Future Version
 ======
+-New Feature: add a semverVersionTopoPrefix()
 
 0.6.0
 ======
