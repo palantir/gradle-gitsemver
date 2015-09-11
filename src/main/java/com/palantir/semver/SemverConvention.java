@@ -51,10 +51,25 @@ public class SemverConvention {
 
     public SemverVersion semverVersionPrefix(String prefix) {
         if (prefix == null || prefix.length() == 0) {
-            throw new IllegalArgumentException("No prefix specified for prefixSemverVersion");
+            throw new IllegalArgumentException("No prefix specified for semverVersionPrefix");
         }
         try {
             return SemverGitflowPlugin.getRepoVersion(project, prefix);
+        } catch (NoWorkTreeException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        } catch (IOException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        } catch (GitAPIException e) {
+            throw new SemverGitflowPlugin.VersionApplicationException(e);
+        }
+    }
+
+    public SemverVersion semverVersionTopoPrefix(String prefix) {
+        if (prefix == null || prefix.length() == 0) {
+            throw new IllegalArgumentException("No prefix specified for semverVersionTopoPrefix");
+        }
+        try {
+            return SemverGitflowPlugin.getRepoTopoVersion(project, prefix);
         } catch (NoWorkTreeException e) {
             throw new SemverGitflowPlugin.VersionApplicationException(e);
         } catch (IOException e) {
