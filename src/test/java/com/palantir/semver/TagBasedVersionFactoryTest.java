@@ -91,6 +91,16 @@ public class TagBasedVersionFactoryTest {
     }
 
     @Test
+    public void testHeadPointsAtStableWhenUsingPrefix() throws ConcurrentRefUpdateException,
+            InvalidTagNameException, NoHeadException, GitAPIException,
+            NoWorkTreeException, MissingObjectException,
+            IncorrectObjectTypeException, IOException {
+        versionFactory = new TagBasedVersionFactory("myPrefix");
+        tag("myPrefix-v1.0.0");
+        validateStableTag("1.0.0");
+    }
+
+    @Test
     public void testHeadPointsOneAboveStable()
             throws ConcurrentRefUpdateException, InvalidTagNameException,
             NoHeadException, GitAPIException, NoWorkTreeException,

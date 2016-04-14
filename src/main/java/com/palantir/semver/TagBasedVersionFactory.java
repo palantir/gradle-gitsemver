@@ -60,19 +60,7 @@ public class TagBasedVersionFactory {
                                    boolean isDirty) {
         StringBuilder versionString = new StringBuilder();
 
-        String matchingTag = latestTagAndCount.getVersion();
-        String version;
-        if (prefix != null) {
-            String versionRegex = "^" + prefix + "-v?(.*)$";
-            Pattern versionPattern = Pattern.compile(versionRegex);
-            Matcher matcher = versionPattern.matcher(matchingTag);
-            if (!matcher.matches()) {
-                return new SemverVersion("0.0.0", "0.0.0", "000000000000", 0, null, false);
-            }
-            version = matcher.group(1);
-        } else {
-            version = matchingTag;
-        }
+        String version = getVersionInTag(latestTagAndCount);
         versionString.append(version);
 
         if (isVersionStableRelease(latestTagAndCount)) {
@@ -96,6 +84,23 @@ public class TagBasedVersionFactory {
         return versionObject;
     }
 
+    private String getVersionInTag(TagVersionAndCount latestTagAndCount) {
+        String matchingTag = latestTagAndCount.getVersion();
+        String version;
+        if (prefix != null) {
+            String versionRegex = "^" + prefix + "-v?(.*)$";
+            Pattern versionPattern = Pattern.compile(versionRegex);
+            Matcher matcher = versionPattern.matcher(matchingTag);
+            if (!matcher.matches()) {
+                return "0.0.0";
+            }
+            version = matcher.group(1);
+        } else {
+            version = matchingTag;
+        }
+        return version;        
+    }
+
     private String getFirstSeparator(TagVersionAndCount latestTag) {
         if (isAboveStable(latestTag)) {
             return "-";
@@ -104,13 +109,13 @@ public class TagBasedVersionFactory {
         }
     }
 
-    private static boolean isAboveStable(TagVersionAndCount latestTagAndCount) {
-        return latestTagAndCount.getVersion().matches(STABLE_VERSION_REGEX)
+    private boolean isAboveStable(TagVersionAndCount latestTagAndCount) {
+        return getVersionInTag(latestTagAndCount).matches(STABLE_VERSION_REGEX)
                 && (latestTagAndCount.getCount() > 1);
     }
 
-    private static boolean isVersionStableRelease(TagVersionAndCount latestTagAndCount) {
-        return latestTagAndCount.getVersion().matches(STABLE_VERSION_REGEX)
+    private boolean isVersionStableRelease(TagVersionAndCount latestTagAndCount) {
+        return getVersionInTag(latestTagAndCount).matches(STABLE_VERSION_REGEX)
                 && isTagCountStable(latestTagAndCount.getCount());
     }
 
