@@ -47,7 +47,7 @@ public class PrefixSemanticVersion implements SemanticVersion {
     }
 
     public static SemanticVersion createFromString(String prefix, String version) {
-        String prefixPatternString = "^" + prefix + "-" + SEMANTIC_VERSION_REGEX + "$";
+        String prefixPatternString = "^" + prefix + "-?" + SEMANTIC_VERSION_REGEX + "$";
         Pattern prefixPattern = Pattern.compile(prefixPatternString);
         Matcher matcher = prefixPattern.matcher(version);
         checkArgument(matcher.matches(), "Version string " + version
@@ -74,7 +74,7 @@ public class PrefixSemanticVersion implements SemanticVersion {
     }
 
     public static boolean isValid(String prefix, String version) {
-        String prefixPatternString = "^" + prefix + "-" + SEMANTIC_VERSION_REGEX + "$";
+        String prefixPatternString = "^" + prefix + "-?" + SEMANTIC_VERSION_REGEX + "$";
         Pattern prefixPattern = Pattern.compile(prefixPatternString);
         return prefixPattern.matcher(version).matches();
     }
