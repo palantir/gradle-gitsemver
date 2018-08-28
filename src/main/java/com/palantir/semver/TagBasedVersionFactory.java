@@ -88,7 +88,7 @@ public class TagBasedVersionFactory {
         String matchingTag = latestTagAndCount.getVersion();
         String version;
         if (prefix != null) {
-            String versionRegex = "^" + prefix + "-v?(.*)$";
+            String versionRegex = "^" + prefix + "-?v?(.*)$";
             Pattern versionPattern = Pattern.compile(versionRegex);
             Matcher matcher = versionPattern.matcher(matchingTag);
             if (!matcher.matches()) {
